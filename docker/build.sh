@@ -1,1 +1,0 @@
-../vcpkg/downloads/tools/cmake-3.27.1-linux/cmake-3.27.1-linux-x86_64/bin/cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DCMAKE_MAKE_PROGRAM=/vcpkg/downloads/tools/ninja/1.10.2-linux/ninja -DCMAKE_TOOLCHAIN_FILE:INTERNAL=/vcpkg/scripts/buildsystems/vcpkg.cmake ../green-coro
