@@ -24,10 +24,8 @@ protected:
 public:
     TreeWalkerBase(uint64_t max): counter_max_(max) {}
 
-    void dig_into_natv(size_t depth = 0)
-    {
-        if (counter_ < counter_max_)
-        {
+    void dig_into_natv(size_t depth = 0) {
+        if (counter_ < counter_max_) {
             if (depth < 64) {
                 counter_++;
                 if (counter_ < counter_max_) {

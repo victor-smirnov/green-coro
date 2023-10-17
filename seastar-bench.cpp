@@ -21,10 +21,8 @@ class TreeWalker: public TreeWalkerBase {
 public:
     TreeWalker(uint64_t max): TreeWalkerBase(max) {}
 
-    seastar::future<void> dig_into_fut(size_t depth = 0)
-    {
-        if (counter_ < counter_max_)
-        {
+    seastar::future<void> dig_into_fut(size_t depth = 0) {
+        if (counter_ < counter_max_) {
             if (depth < 64) {
                 counter_++;
                 if (counter_ < counter_max_) {
@@ -41,10 +39,8 @@ public:
         return seastar::make_ready_future();
     }
 
-    seastar::future<void> dig_into_coro(size_t depth = 0)
-    {
-        if (counter_ < counter_max_)
-        {
+    seastar::future<void> dig_into_coro(size_t depth = 0) {
+        if (counter_ < counter_max_) {
             if (depth < 64) {
                 counter_++;
                 if (counter_ < counter_max_) {
@@ -55,10 +51,8 @@ public:
         }
     }
 
-    void dig_into_fiber1(size_t depth = 0)
-    {
-        if (counter_ < counter_max_)
-        {
+    void dig_into_fiber1(size_t depth = 0) {
+        if (counter_ < counter_max_) {
             if (depth < 64) {
                 counter_++;
                 if (counter_ < counter_max_) {
@@ -71,10 +65,8 @@ public:
         seastar::thread::maybe_yield();
     }
 
-    void dig_into_fiber2(size_t depth = 0)
-    {
-        if (counter_ < counter_max_)
-        {
+    void dig_into_fiber2(size_t depth = 0) {
+        if (counter_ < counter_max_) {
             if (depth < 64) {
                 counter_++;
                 if (counter_ < counter_max_) {

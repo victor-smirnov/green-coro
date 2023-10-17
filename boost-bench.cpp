@@ -21,10 +21,8 @@ class TreeWalker: public TreeWalkerBase {
 public:
     TreeWalker(uint64_t max): TreeWalkerBase(max) {}
 
-    void dig_into_fiber(size_t depth = 0)
-    {
-        if (counter_ < counter_max_)
-        {
+    void dig_into_fiber(size_t depth = 0) {
+        if (counter_ < counter_max_) {
             if (depth < 64) {
                 counter_++;
                 if (counter_ < counter_max_) {
