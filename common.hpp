@@ -19,7 +19,7 @@ protected:
     uint64_t counter_{};
     const uint64_t counter_max_;
 
-    uint64_t fib_counter_{};
+
 
 public:
     TreeWalkerBase(uint64_t max): counter_max_(max) {}
@@ -40,10 +40,13 @@ public:
 
     void reset() {
         counter_ = {};
-        fib_counter_ = {};
     }
 
     uint64_t counter() const {return counter_;}
+
+    double speed(uint64_t time) const {
+        return (counter_ / time) / 1000.0;
+    }
 };
 
 

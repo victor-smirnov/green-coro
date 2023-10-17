@@ -55,23 +55,36 @@ public:
         }
     }
 
-    void dig_into_fibr(size_t depth = 0)
+    void dig_into_fiber1(size_t depth = 0)
     {
         if (counter_ < counter_max_)
         {
             if (depth < 64) {
                 counter_++;
                 if (counter_ < counter_max_) {
-                    dig_into_fibr(depth + 1);
-                    dig_into_fibr(depth + 1);
+                    dig_into_fiber1(depth + 1);
+                    dig_into_fiber1(depth + 1);
                 }
             }
         }
 
-        if (++fib_counter_ > 255) {
-            seastar::thread::yield();
-            fib_counter_ = {};
+        seastar::thread::maybe_yield();
+    }
+
+    void dig_into_fiber2(size_t depth = 0)
+    {
+        if (counter_ < counter_max_)
+        {
+            if (depth < 64) {
+                counter_++;
+                if (counter_ < counter_max_) {
+                    dig_into_fiber2(depth + 1);
+                    dig_into_fiber2(depth + 1);
+                }
+            }
         }
+
+        seastar::thread::yield();
     }
 };
 
@@ -84,35 +97,46 @@ int main(int argc, char** argv)
 
     seastar::app_template app(std::move(opts));
     app.run(argc, argv, [] () -> seastar::future<> {
-        std::cout << "Hello world\n";
-
         TreeWalker walker(1ull << 26);
 
         long t0 = time_in_millis();
         co_await walker.dig_into_fut();
         long t1 = time_in_millis();
 
-        std::cout << "Counter futu: " << walker.counter() << " :: " << (t1 - t0) << std::endl;
+        std::cout << "(1) Futures:      " << (t1 - t0) << " ms, "
+                  << walker.speed(t1 - t0) << "M iters/sec" << std::endl;
+
         walker.reset();
         co_await walker.dig_into_coro();
         long t2 = time_in_millis();
-
-        std::cout << "Counter coro: " << walker.counter() << " :: " << (t2 - t1) << std::endl;
-
+        std::cout << "(2) Coroutines:   " << (t2 - t1) << " ms, "
+                  << walker.speed(t2 - t1) << "M iters/sec" << std::endl;
 
         walker.reset();
         co_await seastar::async([&]{
-            walker.dig_into_fibr();
+            walker.dig_into_fiber1();
         });
         long t3 = time_in_millis();
 
-        std::cout << "Counter fibr: " << walker.counter() << " :: " << (t3 - t2) << std::endl;
+        std::cout << "(3) Fibers (opt): " << (t3 - t2) << " ms, "
+                  << walker.speed(t3 - t2) << "M iters/sec" << std::endl;
+
+        walker.reset();
+        co_await seastar::async([&]{
+            walker.dig_into_fiber2();
+        });
+        long t4 = time_in_millis();
+
+        std::cout << "(4) Fibers (raw): " << (t4 - t3) << " ms, "
+                  << walker.speed(t4 - t3) << "M iters/sec" << std::endl;
+
 
         walker.reset();
         walker.dig_into_natv();
-        long t4 = time_in_millis();
+        long t5 = time_in_millis();
 
-        std::cout << "Counter natv: " << walker.counter() << " :: " << (t4 - t3) << std::endl;
+        std::cout << "(5) Raw calls:    " << (t5 - t4) << " ms, "
+                  << walker.speed(t5 - t4) << "M iters/sec" << std::endl;
 
     });
 
