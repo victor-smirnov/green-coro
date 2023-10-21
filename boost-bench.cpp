@@ -63,7 +63,7 @@ int main(int argc, char** argv)
 
     long t3 = time_in_millis();
 
-    std::cout << "(6) Boost Fibers (opt): " << (t3 - t2) << " ms, "
+    std::cout << "(6) Boost Fibers (raw): " << (t3 - t2) << " ms, "
               << walker.speed(t3 - t2) << "M iters/sec" << std::endl;
 
     walker.reset();

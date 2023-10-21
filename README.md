@@ -1,2 +1,1 @@
-# green-coro
-My thoughts on and experiments with C++20 coroutines and fibers.
+This project aims to be a hosting for my rationale for the new types of fibers. See this [wiki page](wiki/Dialectics-of-fibers-and-coroutines-in-Cxx-and-successor-languages) for detais.
