@@ -3,6 +3,6 @@
     "name": "green-coro",
     "version": "0.1.0",
     "dependencies": [
-        "seastar", "boost"
+        "seastar"
     ]
 }
